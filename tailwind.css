@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+.img{
+    @apply md:w-20 md:h-20 w-12 h-12 object-contain;
+}
+.hide{
+    @apply hidden sm:block;
+}
+
+.button{
+    @apply px-2 py-1 rounded cursor-pointer mx-1
+}
+.qty{
+    @apply cursor-pointer hover:text-orange-800 hover:text-orange-950 md:text-xl;
+}
