@@ -1,8 +1,12 @@
 import { forwardRef, useRef, useImperativeHandle } from "react";
 import originalData from "../assets/data.js";
+import { useContext } from "react";
+import { ItemContext } from "../store/Items-context.jsx";
 
-const Modal = forwardRef(function Modal({ cartItems, addQty, dleQty }, ref) {
+const Modal = forwardRef(function Modal({},ref) {
   const modal = useRef();
+
+  const ItemCtx = useContext(ItemContext);
 
   let getProduct = (id) => {
     let product = originalData.find((pro) => pro.id === id);
@@ -16,16 +20,16 @@ const Modal = forwardRef(function Modal({ cartItems, addQty, dleQty }, ref) {
       },
     };
   });
-  let netPrice = cartItems.reduce(
+  let netPrice = ItemCtx.items.reduce(
     (total, item) => total + getProduct(item.id).price * item.qty,
     0
   );
 
   let content = <p className="text-orange-900">The Cart is empty...</p>;
-  if (cartItems.length > 0) {
+  if (ItemCtx.items.length > 0) {
     content = (
       <ul>
-        {cartItems.map((item) => {
+        {ItemCtx.items.map((item) => {
           return (
             <li
               key={item.id}
@@ -35,11 +39,17 @@ const Modal = forwardRef(function Modal({ cartItems, addQty, dleQty }, ref) {
                 {getProduct(item.id).title}(${getProduct(item.id).price})
               </div>
               <div className="gap-2 ms-5">
-                <button className="qty" onClick={() => dleQty(item)}>
+                <button
+                  className="qty"
+                  onClick={() => ItemCtx.handleDeleteItem(item)}
+                >
                   -
                 </button>
                 <span className="mx-2">{item.qty}</span>
-                <button className="qty" onClick={() => addQty(item)}>
+                <button
+                  className="qty"
+                  onClick={() => ItemCtx.handleAddItem(item)}
+                >
                   +
                 </button>
               </div>

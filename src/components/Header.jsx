@@ -1,8 +1,13 @@
 import logo from "../assets/logo.png";
 import Button from "./Button";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-export default function Header({ itemList, handleCart }) {
-  const items = itemList.reduce((total, item) => total + item.qty, 0);
+import { useContext } from "react";
+import { ItemContext } from "../store/Items-context";
+
+export default function Header() {
+  const CardCtx = useContext(ItemContext);
+
+  const items = CardCtx.items.reduce((total, item) => total + item.qty, 0);
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-[2rem] bg-yellow-950 mx-[1.2rem] md:mx-[10rem]">
       <div className="flex items-center">
@@ -12,7 +17,7 @@ export default function Header({ itemList, handleCart }) {
         </h1>
       </div>
       <p>
-        <Button onClick={handleCart}>
+        <Button onClick={() => CardCtx.cartModal()}>
           <ShoppingCartIcon className=" disply"></ShoppingCartIcon>
           <span className="ms-1 hide">Cart</span>{" "}
           {items > 0 ? `(${items})` : ""}
